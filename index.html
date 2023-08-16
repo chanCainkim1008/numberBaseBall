@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>세자리 숫자 야구</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 400px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        .input-group {
+            margin: 20px 0;
+        }
+
+        #user-input {
+            width: 70%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        #submit-btn {
+            padding: 11px 20px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        #submit-btn:hover {
+            background-color: #45a049;
+        }
+
+        .log {
+            text-align: left;
+        }
+
+        #result-log {
+            list-style: none;
+            padding: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>세자리 숫자 야구</h1>
+        <div class="input-group">
+            <input type="text" id="user-input" maxlength="3" placeholder="세 자리 숫자 입력" />
+            <button id="submit-btn">확인</button>
+        </div>
+        <div class="log">
+            <h2>결과 로그</h2>
+            <p>현재 도전 횟수 : <span id="NumberTry">0</span></p>
+            <ul id="result-log"></ul>
+        </div>
+    </div>
+
+    <script>
+        const numbers = [];
+
+        for (let n = 1; n <= 9; n++) {
+            numbers.push(n);
+        }
+
+        const answer = [];
+        for (let n = 0; n < 3; n++) {
+            const index = Math.floor(Math.random() * numbers.length);
+            answer.push(numbers[index]);
+            numbers.splice(index, 1);
+        }
+        console.log(answer);
+
+        let NumberTry = 0;
+
+        // 버튼 제출
+        document
+            .getElementById("submit-btn")
+            .addEventListener("click", UserInput);
+
+        function UserInput() {
+            let input = document.getElementById("user-input").value;
+            let ball = 0;
+            let strike = 0;
+
+            // 스트라이크와 볼 판단 로직
+            for (let i = 0; i < 3; i++) {
+                if (input[i] == answer[i]) {
+                    strike++;
+                } else if (answer.includes(Number(input[i]))) {
+                    ball++;
+                }
+            }
+
+            // 결과 로그에 출력
+            const resultLog = document.getElementById("result-log");
+            const resultMessage =
+                strike === 3 ? `${NumberTry + 1}번만에 맞추셨습니다` : `${NumberTry + 1}번째 시도: ${input} - ${ball}B${strike}S`;
+            const li = document.createElement("li");
+            li.textContent = resultMessage;
+            resultLog.appendChild(li);
+
+            NumberTry++;
+            document.getElementById("NumberTry").innerText = NumberTry;
+        }
+    </script>
+</body>
+
+</html>
